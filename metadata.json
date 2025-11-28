@@ -1,0 +1,5 @@
+{
+  "name": "Kicker Turnier Planer",
+  "description": "Eine App zur Erstellung fairer Teams und eines dynamischen Turnierplans für Tischkicker-Turniere. Teilnehmer eintragen, Teams generieren lassen, Ergebnisse erfassen und den Weg zum Finale verfolgen.",
+  "requestFramePermissions": []
+}
