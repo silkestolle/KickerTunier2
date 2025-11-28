@@ -256,39 +256,49 @@ const App: React.FC = () => {
         return <TournamentBracket rounds={rounds} updateMatchResult={updateMatchResult} />;
       case 'FINISHED':
         return (
-          <div className="text-center p-8">
-            <h2 className="text-4xl font-bold text-yellow-400 mb-4">Turnier beendet!</h2>
-            <div className="bg-gray-800 rounded-lg p-6 inline-flex flex-col items-center shadow-lg">
-                <TrophyIcon className="w-24 h-24 text-yellow-400 mb-4"/>
-                <p className="text-2xl text-gray-300">Der Sieger ist</p>
-                <p className="text-5xl font-extrabold text-white mt-2 mb-4">{winner?.name}</p>
-                <p className="text-xl text-gray-400">{winner?.players.map(p => p.name).join(' & ')}</p>
+          <div className="text-center p-4 sm:p-8 animate-fade-in">
+            <h2 className="text-3xl sm:text-4xl font-bold text-yellow-400 mb-6">Turnier beendet!</h2>
+            <div className="bg-gray-800 rounded-2xl p-6 sm:p-10 inline-flex flex-col items-center shadow-2xl border border-gray-700">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-yellow-500 blur-2xl opacity-20 rounded-full"></div>
+                  <TrophyIcon className="w-24 h-24 sm:w-32 sm:h-32 text-yellow-400 mb-6 relative z-10"/>
+                </div>
+                <p className="text-xl sm:text-2xl text-gray-300">Der Sieger ist</p>
+                <p className="text-4xl sm:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-600 mt-2 mb-4">{winner?.name}</p>
+                <p className="text-lg sm:text-xl text-gray-400 font-medium">{winner?.players.map(p => p.name).join(' & ')}</p>
             </div>
-            <button onClick={() => startNewTournament()} className="mt-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md">
-                Neues Turnier starten
-            </button>
+            <div className="mt-8 sm:mt-12">
+              <button onClick={() => startNewTournament()} className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition duration-300 shadow-lg hover:shadow-indigo-500/30">
+                  Neues Turnier starten
+              </button>
+            </div>
           </div>
         );
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center p-4 sm:p-6 lg:p-8">
-      <header className="w-full max-w-7xl mb-8 text-center sm:flex sm:justify-between sm:items-center">
-        <h1 className="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500 mb-4 sm:mb-0">
+    <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center p-3 sm:p-6 lg:p-8">
+      <header className="w-full max-w-7xl mb-6 sm:mb-8 flex flex-col lg:flex-row justify-between items-center gap-4">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center lg:text-left text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
           Kicker Turnier Planer
         </h1>
-        <div className="flex items-center justify-center gap-2">
-          <button onClick={() => startNewTournament(true)} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2">
+        
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 w-full lg:w-auto">
+          <button 
+            onClick={() => startNewTournament(true)} 
+            className="flex-1 sm:flex-none justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2 shadow-sm text-sm sm:text-base font-medium"
+          >
             <PlusIcon className="w-5 h-5" />
-            Neues Turnier
+            <span className="whitespace-nowrap">Neues Turnier</span>
           </button>
-          <div className="relative">
+          
+          <div className="relative flex-1 sm:flex-none">
             {Object.keys(savedTournaments).length > 0 && (
               <>
                 <button 
                   onClick={() => setShowHistory(prev => !prev)} 
-                  className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center gap-2"
+                  className="w-full justify-center px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center gap-2 shadow-sm text-sm sm:text-base font-medium"
                 >
                   Verlauf
                   <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 transition-transform ${showHistory ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
@@ -296,8 +306,8 @@ const App: React.FC = () => {
                   </svg>
                 </button>
                 {showHistory && (
-                  <div className="absolute right-0 mt-2 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-10">
-                    <ul className="max-h-96 overflow-y-auto">
+                  <div className="absolute right-0 top-full mt-2 w-full sm:w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-20 max-w-[90vw]">
+                    <ul className="max-h-80 sm:max-h-96 overflow-y-auto">
                       {Object.keys(savedTournaments)
                         .sort((a, b) => b.localeCompare(a))
                         .map(id => {
@@ -309,14 +319,14 @@ const App: React.FC = () => {
                                   onClick={() => loadTournament(id)}
                                   className="flex-grow text-left px-4 py-3 hover:bg-indigo-500/10 transition-colors"
                                 >
-                                  <p className="font-semibold text-indigo-300">{new Date(id).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })} Uhr</p>
-                                  <p className="text-sm text-gray-400">
+                                  <p className="font-semibold text-indigo-300 text-sm sm:text-base">{new Date(id).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })} Uhr</p>
+                                  <p className="text-xs sm:text-sm text-gray-400">
                                     {tournament.winner ? `Sieger: ${tournament.winner.name}` : `${tournament.players.length} Spieler`}
                                   </p>
                                 </button>
                                 <button 
                                   onClick={(e) => { e.stopPropagation(); deleteTournament(id); }}
-                                  className="p-2 mr-2 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-full opacity-0 group-hover:opacity-100 transition-all"
+                                  className="p-3 mr-1 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-full sm:opacity-0 sm:group-hover:opacity-100 transition-all"
                                   aria-label="Turnier löschen"
                                 >
                                     <TrashIcon className="w-5 h-5"/>
@@ -333,7 +343,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </header>
-      <main className="w-full max-w-7xl">
+      <main className="w-full max-w-7xl flex-grow">
         {renderContent()}
       </main>
     </div>
